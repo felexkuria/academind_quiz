@@ -1,3 +1,4 @@
+import 'package:academind_quiz/screen/question_screen.dart';
 import 'package:academind_quiz/screen/start_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -19,9 +20,15 @@ class _QuizState extends State<Quiz> {
   @override
   void initState() {
     activeScreen = StartScreen(
-      title: "startScreen",
+      switchScreen: switchScreen,
     );
     super.initState();
+  }
+
+  void switchScreen() {
+    setState(() {
+      activeScreen = const QuestionScreen();
+    });
   }
 
   @override
@@ -29,6 +36,8 @@ class _QuizState extends State<Quiz> {
     return MaterialApp(
         home: Scaffold(
             body: Container(
+      width: double.infinity,
+      height: double.infinity,
       decoration: const BoxDecoration(
         gradient: LinearGradient(colors: [
           Color.fromARGB(255, 78, 13, 151),
