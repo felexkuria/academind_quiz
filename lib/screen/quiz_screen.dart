@@ -1,3 +1,5 @@
+import 'package:academind_quiz/Data/data.dart';
+import 'package:academind_quiz/models/question_model.dart';
 import 'package:academind_quiz/screen/question_screen.dart';
 import 'package:academind_quiz/screen/start_screen.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,7 @@ class _QuizState extends State<Quiz> {
   // It will be used to store and manage which screen is currently being displayed in the app
   // The Widget type means it can hold any Flutter UI component
   Widget? activeScreen;
+  final List<Question> queries = questions;
 
   // This method is called when the stateful widget is first created
   // It initializes the 'activeScreen' variable with the StartScreen widget
