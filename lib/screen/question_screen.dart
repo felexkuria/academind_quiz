@@ -4,47 +4,27 @@ import 'package:academind_quiz/widgets/answer_widget.dart';
 import 'package:academind_quiz/widgets/question_widget.dart';
 import 'package:flutter/material.dart';
 
-class QuestionScreen extends StatefulWidget {
+class QuestionScreen extends StatelessWidget {
   const QuestionScreen({
     super.key,
+    required this.nextQuery,
+    required this.question,
   });
-
-  @override
-  State<QuestionScreen> createState() => _QuestionScreenState();
-}
-
-class _QuestionScreenState extends State<QuestionScreen> {
-  final List<Question> qauestions = questions;
-  var selectedIndex = 0;
-
-  void nextQuestion() {
-    setState(() {
-      selectedIndex++;
-    });
-  }
-
-  void restartQuiz() {
-    setState(() {
-      selectedIndex = 0;
-      qauestions.shuffle();
-    });
-  }
+  final void Function() nextQuery;
+  final Question question;
 
   @override
   Widget build(BuildContext context) {
-    var currentQuestion = qauestions[selectedIndex];
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
         QuestionWidget(
-          question: currentQuestion.questionText,
+          question: question.questionText,
         ),
-        ...currentQuestion.getShuffledAnswers().map((question) => AnswerWidget(
-              answer: question,
-              onPressed: () {
-                nextQuestion();
-              },
+        ...question.getShuffledAnswers().map((answer) => AnswerWidget(
+              answer: answer,
+              onPressed: nextQuery,
             ))
       ],
     );

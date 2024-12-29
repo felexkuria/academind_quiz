@@ -12,30 +12,42 @@ class Quiz extends StatefulWidget {
 }
 
 class _QuizState extends State<Quiz> {
-  // This line declares a class-level variable 'activeScreen' of type Widget that can be null (indicated by ?)
-  // It will be used to store and manage which screen is currently being displayed in the app
-  // The Widget type means it can hold any Flutter UI component
-  Widget? activeScreen;
+  var activeScreen = "start-screen";
   final List<Question> queries = questions;
 
-  // This method is called when the stateful widget is first created
-  // It initializes the 'activeScreen' variable with the StartScreen widget
-  @override
-  void initState() {
-    activeScreen = StartScreen(
-      switchScreen: switchScreen,
-    );
-    super.initState();
-  }
+  var selectedIndex = 0;
 
   void switchScreen() {
     setState(() {
-      activeScreen = const QuestionScreen();
+      activeScreen = "question-screen";
+    });
+  }
+
+  void nextQuestion() {
+    if (selectedIndex >= queries.length - 1) {
+      setState(() {
+        activeScreen = "start-screen";
+        selectedIndex = 0;
+      });
+      return;
+    }
+    setState(() {
+      selectedIndex++;
+    });
+  }
+
+  void restartQuiz() {
+    setState(() {
+      selectedIndex = 0;
+      queries.shuffle();
+      activeScreen = "start-screen";
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final currentQuestions = queries[selectedIndex];
+
     return MaterialApp(
         home: Scaffold(
             body: Container(
@@ -47,7 +59,9 @@ class _QuizState extends State<Quiz> {
           Color.fromARGB(255, 107, 15, 168)
         ], begin: Alignment.topLeft, end: Alignment.bottomRight),
       ),
-      child: activeScreen,
+      child: activeScreen == "start-screen"
+          ? StartScreen(switchScreen: switchScreen)
+          : QuestionScreen(nextQuery: nextQuestion, question: currentQuestions),
     )));
   }
 }
