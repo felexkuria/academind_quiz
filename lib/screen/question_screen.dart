@@ -1,4 +1,3 @@
-import 'package:academind_quiz/Data/data.dart';
 import 'package:academind_quiz/models/question_model.dart';
 import 'package:academind_quiz/widgets/answer_widget.dart';
 import 'package:academind_quiz/widgets/question_widget.dart';
@@ -10,7 +9,7 @@ class QuestionScreen extends StatelessWidget {
     required this.nextQuery,
     required this.question,
   });
-  final void Function() nextQuery;
+  final void Function(String answer) nextQuery;
   final Question question;
 
   @override
@@ -24,7 +23,9 @@ class QuestionScreen extends StatelessWidget {
         ),
         ...question.getShuffledAnswers().map((answer) => AnswerWidget(
               answer: answer,
-              onPressed: nextQuery,
+              onPressed: () {
+                nextQuery(answer);
+              },
             ))
       ],
     );
