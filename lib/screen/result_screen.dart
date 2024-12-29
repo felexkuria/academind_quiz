@@ -18,28 +18,28 @@ class ResultScreen extends StatefulWidget {
 
 class _ResultScreenState extends State<ResultScreen> {
   // Get total questions from questions list
-  late final int numTotalQuestions;
-  int numCorrectQuestions = 0;
+  // late final int numTotalQuestions;
+  // int numCorrectQuestions = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    // Initialize total questions count
-    numTotalQuestions = questions.length;
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // Initialize total questions count
+  //   numTotalQuestions = questions.length;
 
-    // Make sure we check all questions, not just selected answers
-    for (var i = 0; i < numTotalQuestions; i++) {
-      if (i < widget.selectedAnswers.length &&
-          widget.selectedAnswers[i] == questions[i].answers[0]) {
-        numCorrectQuestions++;
-      }
-    }
-  }
+  //   // Make sure we check all questions, not just selected answers
+  //   for (var i = 0; i < numTotalQuestions; i++) {
+  //     if (i < widget.selectedAnswers.length &&
+  //         widget.selectedAnswers[i] == questions[i].answers[0]) {
+  //       numCorrectQuestions++;
+  //     }
+  //   }
+  // }
 
   List<Map<String, Object>> summaryData() {
     final List<Map<String, Object>> summary = [];
     // Use total questions count instead of selected answers length
-    for (var i = 0; i < numTotalQuestions; i++) {
+    for (var i = 0; i < questions.length; i++) {
       summary.add({
         'question_index': i,
         'question': questions[i].questionText,
@@ -54,6 +54,11 @@ class _ResultScreenState extends State<ResultScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final numTotalQuestions = questions.length;
+    final numCorrectQuestions = summaryData().where((data) {
+      return data['user_answer'] != 'Not answered' &&
+          data['user_answer'] == data['correct_answer'];
+    }).length;
     return Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
